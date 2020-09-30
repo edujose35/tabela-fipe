@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  tabela-fipe-postgres:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: "postgres"
+    ports:
+    - "5433:5432"
+    volumes:
+    - ./data:/var/lib/postgresql/data
+    networks:
+      - postgres-network
+
+  tabela-fipe-pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@tabelafipe.com"
+      PGADMIN_DEFAULT_PASSWORD: "admin"
+    ports:
+    - "16543:80"
+    depends_on:
+      - tabela-fipe-postgres
+    networks:
+      - postgres-network
+
+networks:
+  postgres-network:
+    driver: bridge
